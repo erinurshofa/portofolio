@@ -343,7 +343,7 @@
               </div>
               <div class="work-card-footer">
                 <span class="work-card-status">🟢 Operasional Aktif</span>
-                <button type="button" class="btn-work-detail open-modal-btn" data-img="images/projects/point-of-sales-penjualan.png" data-title="Point of Sales & Inventori" data-desc="Tampilan layar kasir cepat dengan barcode scanner, diskon bertingkat, piutang tempo, dan sinkronisasi stok otomatis.">Lihat Screenshot</button>
+                <button type="button" class="btn-work-detail open-modal-btn" data-project-id="point-of-sales">Lihat Screenshot (6) ➔</button>
               </div>
             </div>
           </article>
@@ -368,7 +368,7 @@
               </div>
               <div class="work-card-footer">
                 <span class="work-card-status">🟢 Melayani 200+ Warga/Hari</span>
-                <button type="button" class="btn-work-detail open-modal-btn" data-img="images/projects/antrian-dinsos-display-clean.webp" data-title="Display Antrian Dinsos Kota Semarang" data-desc="Sistem antrian terintegrasi dengan pemanggilan suara otomatis multi-loket untuk kelancaran pelayanan warga.">Lihat Screenshot</button>
+                <button type="button" class="btn-work-detail open-modal-btn" data-project-id="antrian-dinsos">Lihat Screenshot (6) ➔</button>
               </div>
             </div>
           </article>
@@ -393,7 +393,7 @@
               </div>
               <div class="work-card-footer">
                 <span class="work-card-status">🟢 Live & Inovatif</span>
-                <button type="button" class="btn-work-detail open-modal-btn" data-img="images/projects/catet-ai-telegram-pesan-suara.webp" data-title="Catet AI Telegram Voice Note" data-desc="Kirim suara atau teks bebas di Telegram, sistem AI otomatis mengklasifikasikan pengeluaran ke dalam buku kas digital.">Lihat Screenshot</button>
+                <button type="button" class="btn-work-detail open-modal-btn" data-project-id="catet-ai">Lihat Screenshot (7) ➔</button>
               </div>
             </div>
           </article>
@@ -418,7 +418,7 @@
               </div>
               <div class="work-card-footer">
                 <span class="work-card-status">🟢 Digunakan Sejak 2023</span>
-                <button type="button" class="btn-work-detail open-modal-btn" data-img="images/projects/bimtek-esankem-2026-06-11-01.webp" data-title="Bimtek Lapangan E-Sankem" data-desc="Dokumentasi pelatihan langsung para operator kecamatan dan kelurahan di Kota Semarang untuk memastikan sistem digunakan secara optimal.">Lihat Dokumentasi</button>
+                <button type="button" class="btn-work-detail open-modal-btn" data-project-id="bimtek-esankem">Lihat Dokumentasi (20) ➔</button>
               </div>
             </div>
           </article>
@@ -442,7 +442,7 @@
               </div>
               <div class="work-card-footer">
                 <span class="work-card-status">🟢 Aktif Digunakan</span>
-                <button type="button" class="btn-work-detail open-modal-btn" data-img="images/projects/manajemen-rt-gasem-raya-fitur.webp" data-title="Fitur Manajemen Kas RT Gasem Raya" data-desc="Transparansi iuran warga dan laporan kas bulanan yang bisa dicek langsung melalui ponsel masing-masing warga.">Lihat Screenshot</button>
+                <button type="button" class="btn-work-detail open-modal-btn" data-project-id="manajemen-rt">Lihat Screenshot (3) ➔</button>
               </div>
             </div>
           </article>
@@ -647,13 +647,57 @@
     <span>Mode Klasik</span>
   </a>
 
-  <!-- Lightbox Modal Screenshot -->
-  <div id="comicModal" class="comic-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="comic-modal-card">
-      <button type="button" class="comic-modal-close" id="modalCloseBtn" aria-label="Tutup popup">&times;</button>
-      <img id="modalImg" src="" alt="Pratinjau proyek" style="width: 100%; height: auto; border-radius: 8px; border: 2px solid var(--comic-ink); margin-bottom: 1rem;">
-      <h3 id="modalTitle" style="font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--comic-navy);"></h3>
-      <p id="modalDesc" style="font-size: 0.95rem; color: var(--comic-ink-light); line-height: 1.5;"></p>
+  <!-- Lightbox Modal Screenshot & Interactive Comic Slider -->
+  <div id="comicModal" class="comic-modal" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+    <div class="comic-modal-card" role="document">
+      <!-- Modal Header -->
+      <div class="comic-modal-header">
+        <div class="comic-modal-header-meta">
+          <span class="comic-badge-category" id="modalCategory">Kategori</span>
+          <span class="comic-badge-counter" id="modalCounter">1 / 6</span>
+        </div>
+        <button type="button" class="comic-modal-close" id="modalCloseBtn" aria-label="Tutup popup" title="Tutup (Esc)">✕</button>
+      </div>
+
+      <!-- Modal Stage (Slider Viewport + Prev/Next Buttons) -->
+      <div class="comic-modal-stage">
+        <button type="button" class="comic-slide-nav comic-slide-prev" id="modalPrevBtn" aria-label="Screenshot Sebelumnya" title="Sebelumnya (←)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="comic-slide-viewport" id="modalSlideViewport">
+          <div class="comic-slide-media-wrap">
+            <img id="modalImg" src="" alt="Pratinjau screenshot proyek" class="comic-slide-img" loading="eager">
+          </div>
+          <div class="comic-slide-caption-sticker" id="modalCaption">
+            Layar Proyek
+          </div>
+        </div>
+
+        <button type="button" class="comic-slide-nav comic-slide-next" id="modalNextBtn" aria-label="Screenshot Selanjutnya" title="Selanjutnya (→)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Info Details -->
+      <div class="comic-modal-info">
+        <h3 id="modalTitle" class="comic-modal-title"></h3>
+        <p id="modalDesc" class="comic-modal-desc"></p>
+      </div>
+
+      <!-- Thumbnail Filmstrip Strip -->
+      <div class="comic-modal-thumbs-wrapper">
+        <div class="comic-modal-thumbs" id="modalThumbs" role="tablist" aria-label="Daftar thumbnail screenshot"></div>
+      </div>
+
+      <!-- Keyboard & Gesture Helper Hint -->
+      <div class="comic-modal-footer-hint">
+        <span>💡 Tips: Geser (swipe) di layar HP atau tekan tombol panah <strong>←</strong> / <strong>→</strong> di keyboard untuk ganti slide.</span>
+      </div>
     </div>
   </div>
 

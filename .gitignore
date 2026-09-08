@@ -1,4 +1,179 @@
-.wrangler
-node_modules
+# ==============================================================================
+# WORLD-CLASS STANDARD .GITIGNORE FOR PROFESSIONAL SOFTWARE ENGINEERS
+# Optimized for Web, Node.js, Frontend, PHP/XAMPP, Cloudflare, & Modern Tooling
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. ENVIRONMENT & SENSITIVE SECRETS (CRITICAL - NEVER COMMIT SECRETS)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.env
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+id_rsa
+id_ed25519
+
+# ------------------------------------------------------------------------------
+# 2. OPERATING SYSTEMS ARTIFACTS
+# ------------------------------------------------------------------------------
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ------------------------------------------------------------------------------
+# 3. IDES, EDITORS & WORKSPACE SETTINGS
+# ------------------------------------------------------------------------------
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+.ionide/
+
+# JetBrains (IntelliJ, WebStorm, PhpStorm, etc.)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Sublime Text / Atom / Vim / Emacs
+*.sublime-project
+*.sublime-workspace
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+*~
+\#*\#
+.#*
+
+# ------------------------------------------------------------------------------
+# 4. NODE.JS, PACKAGE MANAGERS & JAVASCRIPT RUNTIMES
+# ------------------------------------------------------------------------------
+node_modules/
+jspm_packages/
+web_modules/
+
+# Logs & Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+bun.lockb.bak
+
+# Cache
+.npm
+.eslintcache
+.stylelintcache
+.prettiercache
+.parcel-cache/
+.turbo/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# ------------------------------------------------------------------------------
+# 5. BUILD OUTPUTS, COMPILED CODE & DISTRIBUTIONS
+# ------------------------------------------------------------------------------
+dist/
+build/
+out/
+bin/
+obj/
+*.tsbuildinfo
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.docusaurus/
+
+# Serverless & Edge Deployments (Wrangler / Cloudflare, Vercel, Netlify)
+.wrangler/
+.vercel/
+.netlify/
+
+# ------------------------------------------------------------------------------
+# 6. PHP & COMPOSER (XAMPP / BACKEND ENVIRONMENTS)
+# ------------------------------------------------------------------------------
+/vendor/
+composer.phar
+composer.lock.bak
+.phpunit.result.cache
+.php-cs-fixer.cache
+
+# ------------------------------------------------------------------------------
+# 7. LOGS, DATABASES & RUNTIME DATA
+# ------------------------------------------------------------------------------
+logs/
+*.log
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.sql.gz
+*.dump
+
+# ------------------------------------------------------------------------------
+# 8. TESTING & CODE COVERAGE
+# ------------------------------------------------------------------------------
+coverage/
+.nyc_output/
+*.lcov
+.coverage
+htmlcov/
+
+# ------------------------------------------------------------------------------
+# 9. TEMPORARY FILES & ARCHIVES
+# ------------------------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+*.rej
+*.tar
+*.gz
+*.zip
+*.7z
+*.rar
+
+# ------------------------------------------------------------------------------
+# 10. SYSTEM & MISC
+# ------------------------------------------------------------------------------
+.cache/
+tmp/
+temp/

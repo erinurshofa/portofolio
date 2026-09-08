@@ -1522,52 +1522,320 @@ body::before {
   background: var(--comic-yellow);
 }
 
-/* Modal Lightbox */
+/* ==========================================================================
+   MODAL LIGHTBOX & INTERACTIVE COMIC SLIDER
+   ========================================================================== */
 .comic-modal {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(22, 32, 44, 0.85);
+  background: rgba(22, 32, 44, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1000;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 1.25rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .comic-modal.active {
   display: flex;
+  opacity: 1;
 }
 
 .comic-modal-card {
   background: #FFF;
   border: var(--border-comic-thick);
-  border-radius: 16px;
-  box-shadow: 8px 8px 0 #000;
-  max-width: 800px;
+  border-radius: 18px;
+  box-shadow: 10px 10px 0 #000;
+  max-width: 860px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 94vh;
   overflow-y: auto;
   position: relative;
   padding: 1.5rem;
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.comic-modal.active .comic-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Modal Header */
+.comic-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.comic-modal-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.comic-badge-category {
+  background: var(--comic-navy);
+  color: #FFF;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--comic-ink);
+}
+
+.comic-badge-counter {
+  background: var(--comic-yellow);
+  color: var(--comic-ink);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--comic-ink);
+  box-shadow: 2px 2px 0 var(--comic-ink);
 }
 
 .comic-modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   background: var(--comic-red);
   color: #FFF;
   border: 2px solid var(--comic-ink);
   border-radius: 50%;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 900;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 2px 2px 0 var(--comic-ink);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.comic-modal-close:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--comic-ink);
+  background: #DC2626;
+}
+
+/* Modal Stage (Slider Viewport + Prev/Next Buttons) */
+.comic-modal-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.comic-slide-nav {
+  width: 44px;
+  height: 44px;
+  background: var(--comic-yellow);
+  color: var(--comic-ink);
+  border: var(--border-comic);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--comic-ink);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.comic-slide-nav:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--comic-ink);
+  background: #FFF;
+}
+
+.comic-slide-nav:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--comic-ink);
+}
+
+.comic-slide-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.comic-slide-viewport {
+  flex: 1;
+  min-width: 0;
+  background: #0F172A;
+  border: var(--border-comic);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 4px 4px 0 var(--comic-ink);
+}
+
+.comic-slide-media-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  max-height: 52vh;
+  background: #0B1120 repeating-linear-gradient(45deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02) 10px, transparent 10px, transparent 20px);
+}
+
+.comic-slide-img {
+  max-width: 100%;
+  max-height: 52vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.comic-slide-img.slide-switching {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+.comic-slide-caption-sticker {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: var(--comic-postit);
+  color: var(--comic-ink);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border: 1.5px solid var(--comic-ink);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--comic-ink);
+  max-width: calc(100% - 24px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+/* Modal Info */
+.comic-modal-info {
+  margin-bottom: 0.9rem;
+}
+
+.comic-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--comic-navy);
+  margin-bottom: 0.3rem;
+}
+
+.comic-modal-desc {
+  font-size: 0.92rem;
+  color: var(--comic-ink-light);
+  line-height: 1.5;
+}
+
+/* Thumbnails Strip */
+.comic-modal-thumbs-wrapper {
+  background: var(--comic-bg);
+  border: 1.5px solid var(--comic-ink);
+  border-radius: 10px;
+  padding: 0.6rem;
+  overflow-x: auto;
+  margin-bottom: 0.6rem;
+  scrollbar-width: thin;
+}
+
+.comic-modal-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.comic-thumb-btn {
+  width: 72px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 2px solid var(--comic-ink);
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 0;
+  background: #FFF;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.15s ease;
+}
+
+.comic-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.comic-thumb-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+
+.comic-thumb-btn.active {
+  opacity: 1;
+  border-color: var(--comic-ink);
+  box-shadow: 3px 3px 0 var(--comic-ink);
+  outline: 3px solid var(--comic-yellow);
+  transform: scale(1.05);
+}
+
+/* Helper Hint */
+.comic-modal-footer-hint {
+  text-align: center;
+  font-family: var(--font-note);
+  font-size: 1.15rem;
+  color: var(--comic-ink-muted);
+}
+
+/* Responsive Modal Adjustments */
+@media (max-width: 640px) {
+  .comic-modal-card {
+    padding: 1rem;
+    max-height: 96vh;
+  }
+  .comic-slide-nav {
+    width: 36px;
+    height: 36px;
+  }
+  .comic-slide-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+  .comic-modal-stage {
+    gap: 0.4rem;
+  }
+  .comic-slide-media-wrap {
+    min-height: 200px;
+    max-height: 42vh;
+  }
+  .comic-slide-img {
+    max-height: 42vh;
+  }
+  .comic-thumb-btn {
+    width: 60px;
+    height: 40px;
+  }
+  .comic-slide-caption-sticker {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.6rem;
+  }
 }
 
 /* ==========================================================================
