@@ -1,0 +1,6 @@
+# Robots.txt for Eri Nur Sofa Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap reference
+Sitemap: /sitemap.xml
