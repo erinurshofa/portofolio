@@ -210,35 +210,58 @@ body::before {
 .comic-nav-links {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: clamp(0.5rem, 1.1vw, 1.15rem);
   list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
+}
+
+.comic-nav-links li {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .comic-nav-links a {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 0.95vw, 0.95rem);
   font-weight: 700;
   color: var(--comic-ink);
   text-decoration: none;
   position: relative;
-  transition: color 0.2s ease;
-  padding: 0.2rem 0.4rem;
+  transition: color 0.15s ease;
+  padding: 0.25rem 0.45rem;
+  white-space: nowrap;
+  word-break: keep-all;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* Static pseudo-element with smooth GPU scaleX transform: Zero layout shift, Zero blink */
+.comic-nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  left: 3px;
+  right: 3px;
+  height: 7px;
+  background: var(--comic-yellow);
+  z-index: -1;
+  border-radius: 3px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  will-change: transform;
 }
 
 .comic-nav-links a:hover {
   color: #000;
 }
 
-.comic-nav-links a:hover::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: var(--comic-yellow);
-  z-index: -1;
-  border-radius: 3px;
+.comic-nav-links a:hover::after,
+.comic-nav-links a.active::after {
+  transform: scaleX(1);
 }
 
 .comic-btn-wa-header {
@@ -262,6 +285,40 @@ body::before {
   transform: translate(-2px, -2px);
   box-shadow: 5px 5px 0 var(--comic-ink);
   background: var(--comic-wa-dark);
+}
+
+.comic-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comic-mobile-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--comic-yellow);
+  color: var(--comic-ink);
+  border: var(--border-comic);
+  box-shadow: 2.5px 2.5px 0 var(--comic-ink);
+  border-radius: 9999px;
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.comic-mobile-toggle:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3.5px 3.5px 0 var(--comic-ink);
+  background: #FFDF60;
+}
+
+.comic-mobile-toggle:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1.5px 1.5px 0 var(--comic-ink);
 }
 
 /* ==========================================================================
@@ -1493,12 +1550,13 @@ body::before {
 }
 
 /* ==========================================================================
-   FLOATING SWITCHER: GANTI KE DESAIN KLASIK
+   FLOATING SWITCHER: GANTI KE DESAIN KLASIK (Diposisikan di kiri bawah)
    ========================================================================== */
 .floating-theme-switcher {
   position: fixed;
   bottom: 24px;
-  right: 24px;
+  left: 24px;
+  right: auto;
   z-index: 99;
   display: flex;
   align-items: center;
@@ -1520,6 +1578,15 @@ body::before {
   transform: translate(-3px, -3px);
   box-shadow: 8px 8px 0 var(--comic-ink);
   background: var(--comic-yellow);
+}
+
+@media (max-width: 640px) {
+  .floating-theme-switcher {
+    bottom: 16px;
+    left: 16px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
 }
 
 /* ==========================================================================
@@ -1864,9 +1931,67 @@ body::before {
 }
 
 @media (max-width: 768px) {
+  .comic-mobile-toggle {
+    display: inline-flex;
+  }
+
+  .comic-nav {
+    position: relative;
+  }
+
   .comic-nav-links {
     display: none;
+    position: absolute;
+    top: calc(100% + 0.85rem);
+    left: 0;
+    right: 0;
+    background: #FAF5EB;
+    border: 2.5px solid var(--comic-ink);
+    box-shadow: 4px 4px 0 var(--comic-ink);
+    border-radius: 16px;
+    padding: 1rem 0.85rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    z-index: 150;
+    animation: comicMenuSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
+  .comic-nav-links.is-open {
+    display: flex;
+  }
+
+  .comic-nav-links li {
+    width: 100%;
+  }
+
+  .comic-nav-links a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: #FFFFFF;
+    border: 2px solid var(--comic-ink);
+    border-radius: 10px;
+    box-shadow: 2.5px 2.5px 0 var(--comic-ink);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--comic-ink);
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+
+  .comic-nav-links a:hover,
+  .comic-nav-links a:active {
+    background: var(--comic-yellow);
+    transform: translate(-1px, -1px);
+    box-shadow: 3.5px 3.5px 0 var(--comic-ink);
+  }
+
+  .comic-nav-links a::after {
+    display: none;
+  }
+
   .hero-headline {
     font-size: 2.2rem;
   }
@@ -1878,6 +2003,38 @@ body::before {
   }
   .footer-box {
     padding: 2rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-text-box h2 {
+    font-size: 1rem;
+  }
+  .brand-text-box p {
+    font-size: 0.68rem;
+  }
+  .brand-avatar-pill {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+  .comic-btn-wa-header {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.8rem;
+  }
+  .comic-btn-wa-label {
+    display: none;
+  }
+}
+
+@keyframes comicMenuSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

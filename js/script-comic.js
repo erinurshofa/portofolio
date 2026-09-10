@@ -534,6 +534,58 @@
   };
 
   /* ==========================================================================
+     MOBILE NAVIGATION DRAWER CONTROLLER
+     ========================================================================== */
+  const setupMobileMenu = () => {
+    const menuBtn = document.getElementById('comicMobileMenuBtn');
+    const navLinks = document.getElementById('comicNavLinks');
+    if (!menuBtn || !navLinks) return;
+
+    const iconHamburger = menuBtn.querySelector('.icon-hamburger');
+    const iconClose = menuBtn.querySelector('.icon-close');
+    const toggleText = menuBtn.querySelector('.mobile-toggle-text');
+
+    const toggleMenu = (forceState) => {
+      const isCurrentlyOpen = navLinks.classList.contains('is-open');
+      const shouldOpen = forceState !== undefined ? forceState : !isCurrentlyOpen;
+
+      navLinks.classList.toggle('is-open', shouldOpen);
+      menuBtn.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+      menuBtn.setAttribute('aria-label', shouldOpen ? 'Tutup Menu Navigasi' : 'Buka Menu Navigasi');
+
+      if (iconHamburger) iconHamburger.style.display = shouldOpen ? 'none' : 'block';
+      if (iconClose) iconClose.style.display = shouldOpen ? 'block' : 'none';
+      if (toggleText) toggleText.textContent = shouldOpen ? 'Tutup' : 'Menu';
+    };
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    // Close mobile menu when any nav link is tapped
+    navLinks.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        toggleMenu(false);
+      });
+    });
+
+    // Close when tapping outside the menu
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('is-open') && !navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        toggleMenu(false);
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('is-open')) {
+        toggleMenu(false);
+      }
+    });
+  };
+
+  /* ==========================================================================
      INITIALIZATION
      ========================================================================== */
   document.addEventListener('DOMContentLoaded', () => {
@@ -543,6 +595,7 @@
     setupCalculator();
     setupWorkFilter();
     setupModal();
+    setupMobileMenu();
   });
 })();
 
